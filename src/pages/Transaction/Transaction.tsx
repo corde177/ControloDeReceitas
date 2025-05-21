@@ -1,5 +1,6 @@
 import { Header } from "../../components/Header/Header";
 import { Summary } from "../../components/Summary/Summary";
+import { SerarchForm } from "../components/SearchForm";
 import { PriceHightLight, TransactionsContainer, TransactionsTable } from "./style";
 
 export function Transaction() {
@@ -9,6 +10,7 @@ export function Transaction() {
       <Summary />
 
       <TransactionsContainer>
+        <SerarchForm />
         <TransactionsTable>
           <tbody>
             <tr>
