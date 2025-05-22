@@ -1,9 +1,35 @@
+import { useEffect, useState } from "react";
 import { Header } from "../../components/Header/Header";
 import { Summary } from "../../components/Summary/Summary";
 import { SerarchForm } from "../components/SearchForm";
-import { PriceHightLight, TransactionsContainer, TransactionsTable } from "./style";
+import {
+  PriceHightLight,
+  TransactionsContainer,
+  TransactionsTable
+} from "./style";
+
+interface Transaction {
+  id: number;
+  description: string;
+  type: "income" | "outcome";
+  price: number;
+  category: string;
+  createdAt: string;
+}
 
 export function Transaction() {
+  const [transactions, setTransactions] = useState<Transaction[]>([]);
+
+  async function loadTransaction() {
+    const response = await fetch("http://localhost:3000/transactions");
+    const data = await response.json();
+    setTransactions(data);
+  }
+
+  useEffect(() => {
+    loadTransaction();
+  }, []);
+
   return (
     <div>
       <Header />
@@ -13,26 +39,20 @@ export function Transaction() {
         <SerarchForm />
         <TransactionsTable>
           <tbody>
-            <tr>
-              <td width="50%">Desenvolvimento de site</td>
-              <td>
-                <PriceHightLight variant="income">
-                    R$ 12.000,00
-                </PriceHightLight>
-              </td>
-              <td>Venda</td>
-              <td>21/05/2025</td>
-            </tr>
-            <tr>
-              <td width="50%">Hamburguer</td>
-              <td>
-                <PriceHightLight variant="outcome">
-                    - R$ 59,00
-                </PriceHightLight>
-              </td>
-              <td>Alimentação</td>
-              <td>21/05/2025</td>
-            </tr>
+            {transactions.map((transaction) => {
+              return (
+                <tr key={transaction.id}>
+                  <td width="50%"> {transaction.description} </td>
+                  <td>
+                    <PriceHightLight variant={transaction.type}>
+                      {transaction.price}
+                    </PriceHightLight>
+                  </td>
+                  <td> {transaction.category} </td>
+                  <td>{transaction.createdAt}</td>
+                </tr>
+              );
+            })}
           </tbody>
         </TransactionsTable>
       </TransactionsContainer>
