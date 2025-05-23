@@ -11,7 +11,23 @@ export function Summary() {
 
   const { transactions } = useContext(TransactionsContext);
 
-  console.log(transactions);
+  const summary = transactions.reduce(
+     (acc, transaction) => {
+      if(transaction.type === 'income') {
+        acc.icome += transaction.price;
+        acc.total += transaction.price;
+      } else {
+        acc.outcome += transaction.price;
+        acc.total -= transaction.price;
+
+      }
+      return acc 
+     },
+    {
+      icome: 0, 
+      outcome: 0, 
+      total: 0
+    })
 
   return (
     <SummaryContainer>
@@ -20,7 +36,7 @@ export function Summary() {
           <span>Entradas</span>
           <ArrowCircleUpIcon size={32} color="#00b373" />
         </header>
-        <strong>R$ 17.400,00</strong>
+        <strong>{summary.icome}</strong>
       </SummaryCard>
 
       <SummaryCard>
@@ -28,7 +44,7 @@ export function Summary() {
           <span>Saídas</span>
           <ArrowCircleDownIcon size={32} color="#f75a68" />
         </header>
-        <strong>R$ 1.259,00</strong>
+        <strong>{summary.outcome}</strong>
       </SummaryCard>
 
       <SummaryCard variant="green">
@@ -36,7 +52,7 @@ export function Summary() {
           <span>Total</span>
           <CurrencyDollarIcon size={32} color="#fff" />
         </header>
-        <strong>R$ 16.141,00</strong>
+        <strong>{summary.total}</strong>
       </SummaryCard>
     </SummaryContainer>
   );
