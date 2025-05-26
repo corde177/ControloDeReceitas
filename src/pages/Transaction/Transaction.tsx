@@ -8,6 +8,7 @@ import {
   TransactionsTable
 } from "./style";
 import { TransactionsContext } from "../../contexts/TransactionsContexts";
+import { dateFormatter, priceFormatter } from "../../utils/formatter";
 
 
 export function Transaction() {
@@ -29,11 +30,13 @@ export function Transaction() {
                   <td width="50%"> {transaction.description} </td>
                   <td>
                     <PriceHightLight variant={transaction.type}>
-                      {transaction.price}
+                      {/* Implementar o sinal menos no valor da saida */}
+                      {transaction.type === 'outcome' && '- '}
+                      {priceFormatter.format(transaction.price)}
                     </PriceHightLight>
                   </td>
                   <td> {transaction.category} </td>
-                  <td>{transaction.createdAt}</td>
+                  <td>{dateFormatter.format(new Date(transaction.createdAt))}</td>
                 </tr>
               );
             })}

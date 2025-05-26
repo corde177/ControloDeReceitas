@@ -6,6 +6,7 @@ import {
   CurrencyDollarIcon
 } from "@phosphor-icons/react";
 import { TransactionsContext } from "../../contexts/TransactionsContexts";
+import { priceFormatter } from "../../utils/formatter";
 
 export function Summary() {
 
@@ -36,7 +37,7 @@ export function Summary() {
           <span>Entradas</span>
           <ArrowCircleUpIcon size={32} color="#00b373" />
         </header>
-        <strong>{summary.icome}</strong>
+        <strong>{priceFormatter.format(summary.icome)}</strong>
       </SummaryCard>
 
       <SummaryCard>
@@ -44,7 +45,7 @@ export function Summary() {
           <span>Saídas</span>
           <ArrowCircleDownIcon size={32} color="#f75a68" />
         </header>
-        <strong>{summary.outcome}</strong>
+        <strong>{priceFormatter.format(summary.outcome)}</strong>
       </SummaryCard>
 
       <SummaryCard variant="green">
@@ -52,7 +53,7 @@ export function Summary() {
           <span>Total</span>
           <CurrencyDollarIcon size={32} color="#fff" />
         </header>
-        <strong>{summary.total}</strong>
+        <strong>{priceFormatter.format(summary.total)}</strong>
       </SummaryCard>
     </SummaryContainer>
   );
