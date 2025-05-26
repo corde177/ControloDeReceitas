@@ -1,12 +1,41 @@
 import { MagnifyingGlassIcon } from "@phosphor-icons/react";
 import { SearchFormContainer } from "./style";
+import { useForm } from "react-hook-form";
+
+import * as  z from 'zod';
+import { zodResolver } from "@hookform/resolvers/zod/src/zod.js";
+
+const searchFormSchema = z.object({
+  query: z.string(),
+})
+
+type SearchFormInputs = z.infer<typeof searchFormSchema>; 
 
 export function SerarchForm() {
+  const { 
+     register,
+     handleSubmit,
+     formState: {
+      isSubmitting
+     }
+     } = useForm<SearchFormInputs>({
+    resolver: zodResolver(searchFormSchema),
+  });
+
+  async function handleSearchTransactions(data: SearchFormInputs) {
+    await new Promise(resolve => setTimeout(resolve, 2000))
+   console.log(data);
+  }
+
   return (
-    <SearchFormContainer>
-      <input type="text" placeholder="Busque por transições" />
-      <button type="submit">
-        <MagnifyingGlassIcon size={32} />
+    <SearchFormContainer onSubmit={handleSubmit(handleSearchTransactions)}>
+      <input 
+         type="text" 
+         placeholder="Busque por transições"
+         {...register('query')}
+      />
+      <button type="submit" disabled={isSubmitting}>
+        <MagnifyingGlassIcon size={32}  />
         Buscar
       </button>
     </SearchFormContainer>
